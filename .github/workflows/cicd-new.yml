@@ -43,11 +43,11 @@ jobs:
           cache: maven
       - name: Install trivy
         run: |
-          sudo apt-get update && sudo apt-get install -y wget apt-transport-https gnupg lsb-release
+          sudo apt-get update -y && sudo apt-get install -y wget apt-transport-https gnupg lsb-release
           # FIXED: Swapped out broken github.io link for official Aqua Security URLs
-          wget -qO - https://github.io | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
-          echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://github.io $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/trivy.list
-          sudo apt-get update
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+          echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update -y
           sudo apt-get install -y trivy
 
       - name: install gitleaks
