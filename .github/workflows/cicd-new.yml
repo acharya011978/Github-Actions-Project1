@@ -43,17 +43,21 @@ jobs:
           cache: maven
       - name: Install trivy
         run: |
-          sudo apt-get install -y wget apt-transport-https gnupg lsb-release
+          sudo apt-get update && sudo apt-get install -y wget apt-transport-https gnupg lsb-release
+          # FIXED: Swapped out broken github.io link for official Aqua Security URLs
           wget -qO - https://github.io | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
           echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://github.io $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/trivy.list
           sudo apt-get update
           sudo apt-get install -y trivy
+
       - name: install gitleaks
-        run: sudo apt-get install gitleaks -y
+        run: |
+          wget -qO gitleaks.tar.gz https://github.com
+          sudo tar -xzf gitleaks.tar.gz -C /usr/local/bin gitleaks
       - name: setup trivy fs
         run: trivy fs --format table -o trivy-fs-report.json .
       - name: gitleaks detect source code
-        run: gitleaks detect source . -r gitleaks-report.json -f json 
+        run: gitleaks detect --source . -r gitleaks-report.json -f json 
         
         
           
