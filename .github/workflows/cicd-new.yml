@@ -112,15 +112,18 @@ jobs:
         run: mvn -B verify sonar:sonar -Dsonar.projectKey=GC-Bank 
         
       - name: sonarqube-quality-gate-check
-        uses: sonarsource/sonarqube-quality-gate-action@main
         id: sonarqube-quality-gate-check
+        uses: sonarsource/sonarqube-quality-gate-action@main
+        with: pollingTimeoutSec: 600
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
-        with: pollingTimeoutSec: 600
+        
       - name: Notify on Failure
+        run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
         if: steps.sonarqube-quality-gate-check.outputs.quality-gate-status == 'FAILED'
         run: echo "The security quality gate failed. Blocking deployment!"		 
+        
 
         
         
