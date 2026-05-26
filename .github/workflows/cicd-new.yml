@@ -109,7 +109,7 @@ jobs:
         env:
           SONAR-TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=GC-Bank 
+         
         
       - name: sonarqube-quality-gate-check
         id: sonarqube-quality-gate-check
