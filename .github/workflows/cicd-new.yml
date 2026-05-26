@@ -104,24 +104,21 @@ jobs:
         with:
           persist_credentials: false
           fetch-depth: 0
-		  
       - name: sonarqube-scan
         uses: sonarsource/sonarqube-scan-action@v7.0.0
         env:
-          SONAR-TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
-         
-        
-      - name: SonarQube Quality Gate Check
+
+      - name: sonarqube quality gate check
         id: sonarqube-quality-gate-check
         uses: sonarsource/sonarqube-quality-gate-action@v1.2.0
-        with: 
+        with:
           pollingTimeoutSec: 600
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
-        
-      - name: "Example show SonarQube Quality Gate Status value"
-        run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
-        
-        
+
+		  
+
+		  
