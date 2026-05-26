@@ -1,4 +1,4 @@
-# env: sit ,  cicd pipeline for vTransact application 
+# env: sit ,  cicd pipeline for my appl. 
 
 name: cicd pipeline 
 on:
