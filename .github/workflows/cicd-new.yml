@@ -92,12 +92,15 @@ jobs:
           cache: maven
       - name: Build the project
         run: mvn clean package
+
+      - name: show target/ diectory
+        run:  ls -lrth target/
             
       - name: upload-artifact
         uses: actions/upload-artifact@v4
         with: 
           name: app-jar
-          path: target/app*
+          path: target/*.jar
 
       - name: checkout
         uses: actions/checkout@v6
