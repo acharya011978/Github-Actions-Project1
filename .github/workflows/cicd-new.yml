@@ -123,7 +123,7 @@ jobs:
 
   pull_docker_image_push:
     runs-on: self-hosted
-    needs:   build_project_and_sonar_scan:
+    needs: build_project_and_sonar_scan
     steps:
       - name: checkout
         uses: actions/checkout@v6
@@ -154,9 +154,3 @@ jobs:
         with:
           push: true
           tags: sonipa/bankapp:latest
-          
-          
-
-        
-        
-        
