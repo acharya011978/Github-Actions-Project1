@@ -154,5 +154,6 @@ jobs:
       - name: build and push image
         uses: docker/build-push-action@v7
         with:
+          context: .
           push: true
           tags: sonipa/bankapp:latest
