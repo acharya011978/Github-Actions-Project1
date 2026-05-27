@@ -152,8 +152,9 @@ jobs:
       - name: build and push image
         uses: docker/build-push-action@v7
         with:
-          tag: user/tag:latest
           push: true
+          tags: user/app:latest
+          
           
 
         
