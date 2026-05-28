@@ -160,3 +160,14 @@ jobs:
           context: .
           push: true
           tags: sonipa/bankapp:latest
+
+
+  deploy_to_kubernetes:
+    runs-on: self-hosted
+    needs: build_docker_image_and_push
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+        with:
+          persist_credentials: false
+        
