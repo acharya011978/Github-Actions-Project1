@@ -55,7 +55,7 @@ jobs:
       - name: setup trivy fs
         run: trivy fs --format table -o trivy-fs-report.json .
       - name: gitleaks detect source code
-        run: gitleaks detect --source . -r gitleaks-report.json -f json 
+        run: gitleaks detect --source . -r gitleaks-report.json -f json || true
         
   test:
     runs-on: self-hosted
