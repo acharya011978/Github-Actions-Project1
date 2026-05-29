@@ -161,34 +161,38 @@ jobs:
           push: true
           tags: sonipa/bankapp:latest
 
-
   deploy_to_kubernetes:
     runs-on: self-hosted
     needs: build_docker_image_and_push
+
     steps:
       - name: checkout
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          fetch-depth: 0
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
 
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v3
-		
-      - name: Configure kubeconfig
+      - name: Install AWS cli on Runner1
         run: |
-          mkdir -p $HOME/.kube
-          echo "${{ secrets.EKS_KUBECONFIG }}" > $HOME/.kube/config
-          # If your secret is Base64 encoded, use: 
-          # echo "${{ secrets.EKS_KUBECONFIG }}" | base64 -d > $HOME/.kube/config	  
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          sudo apt-get update -y
+          sudo apt-get install unzip -y
+          unzip -o awscliv2.zip
+          sudo ./aws/install --update
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+
       - name: Update kubeconfig
         run: |
-          # This command creates the .kube/config file for you
-          aws eks update-kubeconfig --region ap-south-1 --name <YOUR_CLUSTER_NAME>
+          aws eks update-kubeconfig --region ap-south-1 --name devopsshack-cluster
 
       - name: Deploy to EKS
         run: |
