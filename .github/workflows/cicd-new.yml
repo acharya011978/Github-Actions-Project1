@@ -183,10 +183,8 @@ jobs:
         run: |
           mkdir -p $HOME/.kube
           echo "${{ secrets.EKS_KUBECONFIG }}" > $HOME/.kube/config
-		  
           # If your secret is Base64 encoded, use: 
           # echo "${{ secrets.EKS_KUBECONFIG }}" | base64 -d > $HOME/.kube/config
-		  
 
       - name: Update kubeconfig
         run: |
@@ -197,5 +195,3 @@ jobs:
         run: |
           kubectl apply -f k8s/deployment.yaml
           kubectl apply -f k8s/service.yaml
-
-          
