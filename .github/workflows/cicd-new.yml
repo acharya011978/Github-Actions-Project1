@@ -168,6 +168,34 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v6
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          persist_credentials: false
-        
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+		
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.EKS_KUBECONFIG }}" > $HOME/.kube/config
+		  
+          # If your secret is Base64 encoded, use: 
+          # echo "${{ secrets.EKS_KUBECONFIG }}" | base64 -d > $HOME/.kube/config
+		  
+
+      - name: Update kubeconfig
+        run: |
+          # This command creates the .kube/config file for you
+          aws eks update-kubeconfig --region ap-south-1 --name <YOUR_CLUSTER_NAME>
+
+      - name: Deploy to EKS
+        run: |
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
+
+          
